@@ -1,4 +1,4 @@
-import { CREATE_TODO, REMOVE_TODO } from "./actions";
+import { CREATE_TODO, REMOVE_TODO, MARK_AS_COMPLETED } from "./actions";
 
 export const todos = (state = [], action) => {
     const { type, payload } = action;
@@ -12,9 +12,14 @@ export const todos = (state = [], action) => {
             };
             return state.concat(newTodo);
         }
-        case REMOVE_TODO: {
+        case MARK_AS_COMPLETED: {
             const {text} = payload;
-            return state.filter(todo => todo.text !== text);
+            return state.map(todo => {
+                if(text === todo.text){
+                    todo.isCompleted = true;
+                }
+                return todo;
+            });
         }
         default: {
             return state;
